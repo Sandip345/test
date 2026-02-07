@@ -279,6 +279,72 @@
 }
 
 
+.note-btn{
+  margin-top: 18px;
+  border: 0;
+  background: rgba(255,255,255,0.08);
+  color: var(--text);
+  width: 42px;
+  height: 42px;
+  border-radius: 999px;
+  display:grid;
+  place-items:center;
+  cursor:pointer;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+  transition: transform .15s ease, background .15s ease, opacity .15s ease;
+  opacity: 0.85;
+}
+.note-btn:hover{ transform: translateY(-2px) scale(1.02); background: rgba(255,255,255,0.12); }
+.note-btn:active{ transform: translateY(0px) scale(0.98); }
+
+.note-modal{
+  position: fixed;
+  inset: 0;
+  display:none;
+  place-items:center;
+  z-index: 1000;
+  background: rgba(0,0,0,0.45);
+  backdrop-filter: blur(6px);
+}
+.note-modal.show{ display:grid; }
+
+.note-card{
+  width: min(520px, 90vw);
+  border-radius: 20px;
+  padding: 18px 18px 16px;
+  background: rgba(25, 0, 20, 0.72);
+  border: 1px solid rgba(255,255,255,0.10);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  text-align:left;
+  position: relative;
+}
+
+.note-title{
+  margin: 4px 32px 10px 0;
+  font-size: 18px;
+  letter-spacing: .2px;
+}
+
+.note-text{
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.55;
+  opacity: 0.92;
+}
+
+.note-close{
+  position:absolute;
+  top: 10px;
+  right: 10px;
+  border:0;
+  background: rgba(255,255,255,0.10);
+  color: var(--text);
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  cursor:pointer;
+}
+.note-close:hover{ background: rgba(255,255,255,0.16); }
 
 
 
@@ -307,11 +373,28 @@
     <h1>Happy Rose Day Maya🌹</h1>
     <p id="secret" style="opacity:0; transition:opacity .6s ease; margin-top:10px;">
   I ❤️ You 🌹
-      <div class="signature">
-  — Forever Yours, Sandip 💖
-</div>
+  <div class="note-wrapper">
+  <span class="note-btn" id="noteBtn">💌</span>
+  </div>
 
-</p>
+
+<div class="note-modal" id="noteModal" aria-hidden="true">
+  <div class="note-card" role="dialog" aria-modal="true" aria-label="Love note">
+    <button class="note-close" id="noteClose" type="button" aria-label="Close note">✕</button>
+    <h2 class="note-title">💌</h2>
+    <p class="note-text" id="noteText">
+      Maya, it's Rose Day today, and I haven't been able to give you a rose in person. 
+      I know we will do that someday in the future, but for now, here is your virtual rose to cheer you up. I hope this makes your day a little brighter. 
+      You are a rose to me yourself — you always have been.
+      And today, I'm giving a beautiful virtual rose to my beautiful rose of a girlfriend. 🌹🌹
+    </p>
+    <div class="signature">
+  — Forever Yours, Sandip 💖
+    </div>
+    </div>
+    </div>
+
+    </p>
 
   </main>
 
@@ -414,6 +497,33 @@ function createSparkle() {
 // continuously create sparkles
 setInterval(createSparkle, 300);
 
+// --- Note popup ---
+const noteBtn = document.getElementById("noteBtn");
+const noteModal = document.getElementById("noteModal");
+const noteClose = document.getElementById("noteClose");
+
+function openNote(){
+  noteModal.classList.add("show");
+  noteModal.setAttribute("aria-hidden", "false");
+}
+
+function closeNote(){
+  noteModal.classList.remove("show");
+  noteModal.setAttribute("aria-hidden", "true");
+}
+
+noteBtn.addEventListener("click", openNote);
+noteClose.addEventListener("click", closeNote);
+
+// click outside card closes it
+noteModal.addEventListener("click", (e) => {
+  if (e.target === noteModal) closeNote();
+});
+
+// Esc closes it
+window.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") closeNote();
+});
 
 
   </script>
